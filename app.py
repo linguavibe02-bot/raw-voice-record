@@ -28,18 +28,29 @@ st.markdown("""
     .title { text-align: center; color: white; font-family: 'Helvetica Neue', sans-serif; font-size: 32px; font-weight: 900; margin-bottom: 0px; }
     .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 30px; }
     
-    /* ESTILOS DEL FORMULARIO - AQUÍ ARREGLAMOS LAS LETRAS BLANCAS */
-    .stTextInput > div > div > input { 
-        background-color: #1a1a1a; 
-        color: #ffffff !important; /* Texto que escribe el usuario en blanco */
-        border-radius: 10px; 
-    }
-    /* Texto de las etiquetas (Nombre completo, Ciudad, etc) en blanco */
-    div[data-testid="stWidgetLabel"] p {
+    /* 🔥 AQUÍ ESTÁ LA MAGIA PARA LAS LETRAS BLANCAS 🔥 */
+    /* 1. El texto de los títulos (Nombre completo, Ciudad, etc.) */
+    div[data-testid="stTextInput"] label p {
         color: #ffffff !important;
-        font-weight: 500;
+        font-weight: 600 !important;
+        font-size: 15px !important;
     }
     
+    /* 2. El texto que el usuario escribe dentro de la caja */
+    div[data-testid="stTextInput"] input {
+        color: #ffffff !important;
+        background-color: #1a1a1a !important;
+        -webkit-text-fill-color: #ffffff !important; /* Fuerza el blanco en celulares */
+        border-radius: 10px !important;
+    }
+    
+    /* 3. El texto de ejemplo (placeholder) un poco más claro */
+    div[data-testid="stTextInput"] input::placeholder {
+        color: #aaaaaa !important;
+        opacity: 1 !important;
+    }
+    
+    /* Botón de enviar */
     .stButton > button { background-color: #ff00cc; color: white; border-radius: 30px; font-weight: bold; width: 100%; padding: 15px; border: none; }
     .stButton > button:hover { background-color: #D4AF37; color: black; }
     </style>
@@ -50,7 +61,7 @@ if "pagina" not in st.session_state:
     st.session_state.pagina = "inicio"
 
 # ==========================================
-# PÁGINA 1: EL INICIO (No la tocamos, funciona bien)
+# PÁGINA 1: EL INICIO
 # ==========================================
 if st.session_state.pagina == "inicio":
     
@@ -74,7 +85,7 @@ if st.session_state.pagina == "inicio":
     st.markdown('<a href="https://wa.me/TU_NUMERO" target="_blank" class="link-btn">💬 Habla directo con el productor</a>', unsafe_allow_html=True)
 
 # ==========================================
-# PÁGINA 2: EL FORMULARIO (Aislamiento)
+# PÁGINA 2: EL FORMULARIO
 # ==========================================
 elif st.session_state.pagina == "formulario":
     
@@ -92,17 +103,16 @@ elif st.session_state.pagina == "formulario":
         nombre = st.text_input("Nombre completo")
         ciudad = st.text_input("Ciudad en Colombia")
         whatsapp = st.text_input("Número de WhatsApp")
-        email = st.text_input("Correo electrónico") # <-- NUEVO CAMPO
+        email = st.text_input("Correo electrónico") 
         link_audio = st.text_input("Link de un audio cantando (Drive, Vocaroo, etc.)")
         
         submitted = st.form_submit_button("Enviar mi audición 🚀", use_container_width=True)
 
     if submitted:
-        if nombre and whatsapp and email and link_audio: # Agregamos el email a la validación
+        if nombre and whatsapp and email and link_audio: 
             fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
             try:
-                # AHORA LEEMOS 6 COLUMNAS (A hasta la F)
                 existing_data = conn.read(worksheet="Sheet1", usecols=list(range(6)), ttl=0)
                 existing_data = existing_data.dropna(how="all")
                 
@@ -112,7 +122,7 @@ elif st.session_state.pagina == "formulario":
                     "Ciudad": ciudad, 
                     "WhatsApp": whatsapp, 
                     "Link Audio": link_audio,
-                    "Correo": email # <-- GUARDAMOS EL CORREO
+                    "Correo": email
                 }])
                 
                 updated_df = pd.concat([existing_data, nuevo_dato], ignore_index=True)
