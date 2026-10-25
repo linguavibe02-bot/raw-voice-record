@@ -90,6 +90,19 @@ st.markdown('<a href="https://docs.google.com/forms/d/e/TU_FORMULARIO_AQUI/viewf
 st.markdown('<a href="https://tiktok.com/@raw.voice.record" target="_blank" class="link-btn">🎵 Síguenos en TikTok</a>', unsafe_allow_html=True)
 
 st.markdown('<a href="https://instagram.com/tu_instagram" target="_blank" class="link-btn">📸 Síguenos en Instagram</a>', unsafe_allow_html=True)
+import streamlit.components.v1 as components
+
+# ... (Aquí está todo tu código anterior: el logo, los títulos y los botones) ...
+
+st.markdown("---") # Una línea divisoria para que se vea bonito
+st.markdown("<h3 style='text-align: center; color: white;'>Aplica para grabar tu canción</h3>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #888;'>Déjanos tus datos y te contactaremos por WhatsApp.</p>", unsafe_allow_html=True)
+
+# Pega aquí el link de tu Google Form (asegúrate de que termine en embedded=true)
+url_formulario = "https://docs.google.com/forms/d/e/TU_LINK_AQUI/viewform?embedded=true"
+
+# Esto incrusta el formulario en tu página
+components.iframe(url_formulario, height=800)
 
 st.markdown('<a href="https://youtube.com/@tu_canal" target="_blank" class="link-btn">▶️ Mira nuestro canal de YouTube</a>', unsafe_allow_html=True)
 
