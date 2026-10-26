@@ -6,7 +6,7 @@ from streamlit_gsheets import GSheetsConnection
 # 1. Configuración de la página
 st.set_page_config(page_title="Raw Voice Record", page_icon="🎙️", layout="centered")
 
-# 2. Inyección de CSS
+# 2. Inyección de CSS (Mantiene tu diseño oscuro y las letras blancas)
 st.markdown("""
     <style>
     .stApp { background-color: #0a0a0a; }
@@ -28,29 +28,20 @@ st.markdown("""
     .title { text-align: center; color: white; font-family: 'Helvetica Neue', sans-serif; font-size: 32px; font-weight: 900; margin-bottom: 0px; }
     .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 30px; }
     
-    /* 🔥 AQUÍ ESTÁ LA MAGIA PARA LAS LETRAS BLANCAS 🔥 */
-    /* 1. El texto de los títulos (Nombre completo, Ciudad, etc.) */
-    div[data-testid="stTextInput"] label p {
+    /* Textos del formulario en blanco y legibles */
+    div[data-testid="stTextInput"] label p, div[data-testid="stSelectbox"] label p {
         color: #ffffff !important;
         font-weight: 600 !important;
         font-size: 15px !important;
     }
     
-    /* 2. El texto que el usuario escribe dentro de la caja */
     div[data-testid="stTextInput"] input {
         color: #ffffff !important;
         background-color: #1a1a1a !important;
-        -webkit-text-fill-color: #ffffff !important; /* Fuerza el blanco en celulares */
+        -webkit-text-fill-color: #ffffff !important;
         border-radius: 10px !important;
     }
     
-    /* 3. El texto de ejemplo (placeholder) un poco más claro */
-    div[data-testid="stTextInput"] input::placeholder {
-        color: #aaaaaa !important;
-        opacity: 1 !important;
-    }
-    
-    /* Botón de enviar */
     .stButton > button { background-color: #ff00cc; color: white; border-radius: 30px; font-weight: bold; width: 100%; padding: 15px; border: none; }
     .stButton > button:hover { background-color: #D4AF37; color: black; }
     </style>
@@ -73,14 +64,17 @@ if st.session_state.pagina == "inicio":
             st.write("*(Sube tu logo.png a GitHub para verlo aquí)*") 
             
     st.markdown("<p class='title'>Raw Voice Record</p>", unsafe_allow_html=True)
-    st.markdown("<p class='subtitle'>Producimos artistas desde cero.<br>Sin costos iniciales. Ganamos si tú ganas.</p>", unsafe_allow_html=True)
+    
+    # EL NUEVO TEXTO CON LAS CIUDADES
+    st.markdown("<p class='subtitle'>Producimos artistas desde cero en Cali, Jamundí y S/der de Quilichao.<br>Sin costos iniciales. Ganamos si tú ganas.</p>", unsafe_allow_html=True)
 
     if st.button("🎙️ Aplica para grabar GRATIS", use_container_width=True, type="primary"):
         st.session_state.pagina = "formulario"
         st.rerun()
 
+    # ENLACES ACTUALIZADOS (CON TU NUEVO INSTAGRAM)
     st.markdown('<a href="https://tiktok.com/@raw.voice.record" target="_blank" class="link-btn">🎵 Síguenos en TikTok</a>', unsafe_allow_html=True)
-    st.markdown('<a href="https://instagram.com/tu_instagram" target="_blank" class="link-btn">📸 Síguenos en Instagram</a>', unsafe_allow_html=True)
+    st.markdown('<a href="https://instagram.com/raw.voice.record" target="_blank" class="link-btn">📸 Síguenos en Instagram</a>', unsafe_allow_html=True)
     st.markdown('<a href="https://youtube.com/@tu_canal" target="_blank" class="link-btn">▶️ Mira nuestro canal de YouTube</a>', unsafe_allow_html=True)
     st.markdown('<a href="https://wa.me/TU_NUMERO" target="_blank" class="link-btn">💬 Habla directo con el productor</a>', unsafe_allow_html=True)
 
@@ -101,7 +95,10 @@ elif st.session_state.pagina == "formulario":
 
     with st.form("mi_formulario", clear_on_submit=True):
         nombre = st.text_input("Nombre completo")
-        ciudad = st.text_input("Ciudad en Colombia")
+        
+        # AQUÍ ESTÁ EL MENÚ DESPLEGABLE PARA FILTRAR LAS CIUDADES
+        ciudad = st.selectbox("¿En qué ciudad vives?", ["Cali", "Jamundí", "Santander de Quilichao", "Otra"])
+        
         whatsapp = st.text_input("Número de WhatsApp")
         email = st.text_input("Correo electrónico") 
         link_audio = st.text_input("Link de un audio cantando (Drive, Vocaroo, etc.)")
