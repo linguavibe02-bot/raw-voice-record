@@ -6,7 +6,7 @@ from streamlit_gsheets import GSheetsConnection
 # 1. Configuración de la página
 st.set_page_config(page_title="Raw Voice Record", page_icon="🎙️", layout="centered")
 
-# 2. Inyección de CSS (Mantiene tu diseño intacto)
+# 2. Inyección de CSS
 st.markdown("""
     <style>
     .stApp { background-color: #0a0a0a; }
@@ -68,11 +68,15 @@ if st.session_state.pagina == "inicio":
         st.session_state.pagina = "formulario"
         st.rerun()
 
+    # ENLACES SEGUROS (Sin número de teléfono)
     st.markdown('<a href="https://tiktok.com/@raw.voice.record" target="_blank" class="link-btn">🎵 Síguenos en TikTok</a>', unsafe_allow_html=True)
     st.markdown('<a href="https://instagram.com/raw.voice.record" target="_blank" class="link-btn">📸 Síguenos en Instagram</a>', unsafe_allow_html=True)
     st.markdown('<a href="https://youtube.com/@tu_canal" target="_blank" class="link-btn">▶️ Mira nuestro canal de YouTube</a>', unsafe_allow_html=True)
+    
+    # Botón de Correo (Seguro)
+    st.markdown('<a href="mailto:raw.voice.record@gmail.com" class="link-btn">✉️ Envíanos un correo</a>', unsafe_allow_html=True)
 
-    # --- SECCIÓN DE TRANSPARENCIA (La tabla de regalías) ---
+    # --- SECCIÓN DE TRANSPARENCIA ---
     st.markdown("<br>", unsafe_allow_html=True)
     with st.expander("💸 ¿Cómo repartimos el dinero? (Transparencia total)"):
         st.markdown("""
@@ -104,17 +108,14 @@ elif st.session_state.pagina == "formulario":
         
     st.markdown("<p class='subtitle'>Déjanos tus datos. Si tu perfil encaja, te contactaremos.</p>", unsafe_allow_html=True)
 
-    # 1. EL PERFIL VA FUERA DEL FORMULARIO PARA QUE ACTUALICE LA CIUDAD EN TIEMPO REAL
     perfil = st.selectbox("¿Cuál es tu perfil?", ["Cantante", "Escritor (Letras)", "Beatmaker / Productor", "Estudio de Grabación"])
     
     st.info("💡 **Nota:** Si eres **Cantante**, debes estar en Cali, Jamundí o S/der de Quilichao. Si eres **Escritor, Beatmaker o Estudio**, puedes aplicar desde cualquier parte del mundo. 🌎")
 
-    # 2. EL RESTO DE LOS DATOS VAN DENTRO DEL FORMULARIO
     with st.form("mi_formulario", clear_on_submit=True):
         
         nombre = st.text_input("Nombre completo")
         
-        # 3. AQUÍ ESTÁ LA MAGIA DEL IF
         if perfil == "Cantante":
             ciudad = st.selectbox("¿En qué ciudad vives?", ["Cali", "Jamundí", "Santander de Quilichao"])
         else:
@@ -131,7 +132,6 @@ elif st.session_state.pagina == "formulario":
             fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             
             try:
-                # Leemos las 7 columnas (A a la G)
                 existing_data = conn.read(worksheet="Sheet1", usecols=list(range(7)), ttl=0)
                 existing_data = existing_data.dropna(how="all")
                 
